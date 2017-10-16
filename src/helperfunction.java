@@ -3,22 +3,22 @@
  * 
  * test
  */
-public class helperfunction {
+public class HelperFunctions {
 
-    // assume marker is id,
+    // Assume marker is ID
+    // GET /app/items?limit=30
     public static String getFirstPage(int limit) {
         String sql = "SELECT * FROM [database] LIMIT " + limit;
 //       int marker = "SELECT ID FROM (SELECT * FROM [database] LIMIT " + limit + ") ORDER BY ID DESC";
         return sql;
     }
 
+    // GET /app/items?limit=30&marker=08ec231f6d9a43dda97d4b950c3393df
     public static String getPage(int limit, String marker) {
         String sql = "SELECT * FROM [database] WHERE ID > " + marker + " LIMIT " + limit;
         return sql;
     }
 
-    // GET /app/items?limit=30
-    // GET /app/items?limit=30&marker=08ec231f6d9a43dda97d4b950c3393df
     public static String paginationDriver(String input) {
         int limitIndex = input.indexOf("limit=");
         String limitString = input.substring(limitIndex + 6);
@@ -33,8 +33,8 @@ public class helperfunction {
         }
     }
 
+    // /app/items?foo=buzz&baz=quux
     public static String filterEqual(String input) {
-        // /app/items?foo=buzz&baz=quux
         String newInput = input.substring(input.indexOf("?") + 1);
         String[] substrings = newInput.split("&");
 
