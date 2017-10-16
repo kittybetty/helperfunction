@@ -1,5 +1,5 @@
 /**
- * Todo: in, nin, neq, gt, gte, lt, and lte; Time based filtering queries
+ * Todo: in, nin, neq, gt, gte, lt, and lte; Time based filtering queries; first, prev, self, next, last
  */
 public class helperfunction {
 
@@ -12,13 +12,11 @@ public class helperfunction {
 
     public static String getPage(int limit, String marker) {
         String sql = "SELECT * FROM [database] WHERE ID > " + marker + " LIMIT " + limit;
-//       int marker = "SELECT ID FROM (SELECT * FROM [database] LIMIT " + limit + ") ORDER BY ID DESC";
         return sql;
     }
 
     // GET /app/items?limit=30
     // GET /app/items?limit=30&marker=08ec231f6d9a43dda97d4b950c3393df
-
     public static String paginationDriver(String input) {
         int limitIndex = input.indexOf("limit=");
         String limitString = input.substring(limitIndex + 6);
@@ -31,7 +29,6 @@ public class helperfunction {
             String marker = input.substring(markerIndex + 7);
             return getPage(Integer.parseInt(limitString), marker);
         }
-
     }
 
     public static String filterEqual(String input) {
