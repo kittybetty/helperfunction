@@ -1,5 +1,5 @@
 /**
- * Todo: in, nin, neq, gt, gte, lt, and lte; Time based filtering queries; first, prev, self, next, last
+ * Todo: Time based filtering queries; first, prev, self, next, last
  * 
  * test
  */
@@ -64,6 +64,29 @@ public class HelperFunctions {
         return sql;
     }
 
+    // GET /app/items?foo=neq:buzz
+    // GET /app/items?size=gt:8
+    // GET /app/items?size=gte:8
+    // GET /app/items?size=lt:8
+    // GET /app/items?size=lte:8
+    public static String filterOperators(String input) {
+        String newInput = input.substring(input.indexOf("?") + 1);
+        String pair = "";
+        if (newInput.contains("=neq:")) {
+            pair = newInput.replace("=neq:", "!=");
+        } else if (newInput.contains("=gt:")){
+            pair = newInput.replace("=gt:", ">");
+        } else if (newInput.contains("=gte:")){
+            pair = newInput.replace("=gte:", ">=");
+        } else if (newInput.contains("=lt:")){
+            pair = newInput.replace("=lt:", "<");
+        } else if (newInput.contains("=lte:")){
+            pair = newInput.replace("=lte:", "<=");
+        }
+        String sql = "SELECT * FROM [database] WHERE " + pair;
+        return sql;
+    }
+
     //  GET /app/items?sort=key1:asc,key2:desc,key3:asc
     public static String sort(String input) {
         String newInput = input.substring(input.indexOf("=") + 1);
@@ -83,6 +106,13 @@ public class HelperFunctions {
         System.out.println(filterIn("GET /app/items?foo=in:buzz,bar", true));
         System.out.println(filterIn("GET /app/items?foo=nin:buzz,bar", false));
 
+        System.out.println(filterOperators("GET /app/items?foo=neq:buzz"));
+        System.out.println(filterOperators("GET /app/items?size=gt:8"));
+        System.out.println(filterOperators("GET /app/items?size=gte:8"));
+        System.out.println(filterOperators("GET /app/items?size=lt:8"));
+        System.out.println(filterOperators("GET /app/items?size=lte:8"));
+
         System.out.println(sort("GET /app/items?sort=key1:asc,key2:desc,key3:asc"));
+
     }
 }
